@@ -7,6 +7,9 @@ const fileMeta = document.getElementById("file-meta");
 const previewEmpty = document.getElementById("preview-empty");
 const previewEmptyMessage = document.getElementById("preview-empty-message");
 const previewFrame = document.getElementById("preview-frame");
+const workspaceContainer = document.getElementById("workspace-container");
+const dropCardSection = document.getElementById("drop-card-section");
+const previewPanelSection = document.getElementById("preview-panel-section");
 
 let dragDepth = 0;
 
@@ -63,6 +66,17 @@ function showPreviewEmpty(message = "Elegí o arrastrá un archivo .nsplus para 
   if (previewFrame) {
     previewFrame.hidden = true;
   }
+
+  // Mantener la vista en el input de archivo
+  if (workspaceContainer) {
+    workspaceContainer.dataset.state = "empty";
+  }
+  if (dropCardSection) {
+    dropCardSection.hidden = false;
+  }
+  if (previewPanelSection) {
+    previewPanelSection.hidden = true;
+  }
 }
 
 function showPreviewContent(viewerHtml, fileName) {
@@ -74,6 +88,17 @@ function showPreviewContent(viewerHtml, fileName) {
 
   if (previewEmpty) {
     previewEmpty.hidden = true;
+  }
+
+  // Cambiar la vista para mostrar solo el panel de vista previa
+  if (workspaceContainer) {
+    workspaceContainer.dataset.state = "preview";
+  }
+  if (dropCardSection) {
+    dropCardSection.hidden = true;
+  }
+  if (previewPanelSection) {
+    previewPanelSection.hidden = false;
   }
 }
 

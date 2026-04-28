@@ -24,8 +24,8 @@
           <!--<div class="hero-chip"></div>-->
         </section>
 
-        <section class="workspace" aria-label="Decodificador NSPlus">
-          <article class="drop-card">
+        <section class="workspace" id="workspace-container" aria-label="Decodificador NSPlus" data-state="empty">
+          <article class="drop-card" id="drop-card-section">
             <div
               id="drop-zone"
               class="drop-zone"
@@ -57,7 +57,7 @@
 
           </article>
 
-          <aside class="notes-panel" aria-label="Vista previa del markdown">
+          <aside class="notes-panel" id="preview-panel-section" aria-label="Vista previa del markdown" hidden>
             <p class="eyebrow">Vista previa</p>
             <h2>Markdown renderizado</h2>
             <p class="preview-copy">
