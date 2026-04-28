@@ -28,12 +28,12 @@
 }
 
 html {
-  min-height: 100%;
+  height: 100%;
 }
 
 body {
   margin: 0;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
@@ -68,6 +68,9 @@ body::before {
 .page-shell {
   position: relative;
   isolation: isolate;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .page-shell::before,
@@ -99,10 +102,11 @@ body::before {
 .app {
   width: min(1120px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 16px 0 16px;
+  padding: 16px;
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .hero {
@@ -110,7 +114,8 @@ body::before {
   align-items: flex-start;
   justify-content: space-between;
   gap: 24px;
-  padding: 18px 0 26px;
+  padding: 12px 0 16px;
+  flex-shrink: 0;
 }
 
 .hero-copy {
@@ -129,8 +134,8 @@ body::before {
 .hero h1 {
   margin: 0;
   max-width: 12ch;
-  font-size: clamp(2.7rem, 7vw, 5.3rem);
-  line-height: 0.94;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  line-height: 1;
   letter-spacing: -0.05em;
 }
 
