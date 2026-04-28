@@ -4,9 +4,11 @@ const pickFileButton = document.getElementById("pick-file-button");
 const statusRow = document.getElementById("status-row");
 const statusText = document.getElementById("status");
 const fileMeta = document.getElementById("file-meta");
+const previewEmpty = document.getElementById("preview-empty");
+const previewEmptyMessage = document.getElementById("preview-empty-message");
+const previewFrame = document.getElementById("preview-frame");
 
 let dragDepth = 0;
-let previewWindow = null;
 
 function escapeHtml(value) {
   return value
@@ -44,17 +46,30 @@ function openFilePicker() {
   fileInput.click();
 }
 
-function reservePreviewWindow() {
-  if (previewWindow && !previewWindow.closed) {
-    return previewWindow;
+function showPreviewEmpty(message = "Elegí un archivo .nsplus para activar la vista previa.") {
+  if (previewEmptyMessage) {
+    previewEmptyMessage.textContent = message;
   }
 
-  previewWindow = window.open("about:blank", "_blank");
-  if (!previewWindow) {
-    throw new Error("El navegador bloqueó la nueva pestaña. Permití ventanas emergentes para seguir.");
+  if (previewEmpty) {
+    previewEmpty.hidden = false;
   }
 
-  return previewWindow;
+  if (previewFrame) {
+    previewFrame.hidden = true;
+  }
+}
+
+function showPreviewContent(viewerHtml, fileName) {
+  if (previewFrame) {
+    previewFrame.srcdoc = viewerHtml;
+    previewFrame.title = `Vista previa de ${fileName}`;
+    previewFrame.hidden = false;
+  }
+
+  if (previewEmpty) {
+    previewEmpty.hidden = true;
+  }
 }
 
 function extractInputValues(codeHtml) {
@@ -344,10 +359,8 @@ function buildViewerDocument(markdown, fileName, project) {
             Proyecto: <strong>${safeProjectName}</strong> · ${diagramLabel}
           </p>
         </div>
-
         <div class="pill">Vista .md</div>
       </section>
-
       <section class="panel">
         <div class="panel-head">
           <div>
@@ -369,11 +382,11 @@ async function processFile(file) {
   }
 
   if (!file.name.toLowerCase().endsWith(".nsplus")) {
+    showPreviewEmpty("Elegí un archivo con extensión .nsplus.");
+    fileMeta.textContent = "Elegí un archivo con extensión .nsplus.";
     setStatus("Elegí un archivo con extensión .nsplus.", "error");
     return;
   }
-
-  const targetWindow = previewWindow && !previewWindow.closed ? previewWindow : reservePreviewWindow();
 
   setStatus(`Leyendo ${file.name}...`, "working");
   fileMeta.textContent = `Archivo: ${file.name}\nTamaño: ${formatBytes(file.size)}`;
@@ -384,14 +397,7 @@ async function processFile(file) {
     const markdown = formatProjectToMarkdown(project);
 
     const viewerHtml = buildViewerDocument(markdown, file.name, project);
-    const blob = new Blob([viewerHtml], { type: "text/html;charset=utf-8" });
-    const objectUrl = URL.createObjectURL(blob);
-
-    targetWindow.location.href = objectUrl;
-    targetWindow.focus();
-    previewWindow = null;
-
-    setTimeout(() => URL.revokeObjectURL(objectUrl), 15000);
+    showPreviewContent(viewerHtml, file.name);
 
     const details = [`Archivo: ${file.name}`, `Tamaño: ${formatBytes(file.size)}`];
     if (project?.name) {
@@ -402,17 +408,16 @@ async function processFile(file) {
     }
 
     fileMeta.textContent = details.join("\n");
-    setStatus(`Listo: ${file.name} se abrió en una nueva pestaña.`, "success");
+    setStatus(`Listo: ${file.name} se mostró en la vista previa.`, "success");
   } catch (error) {
-    if (previewWindow && !previewWindow.closed) {
-      previewWindow.close();
-    }
+    showPreviewEmpty(error instanceof Error ? error.message : "No se pudo procesar el archivo.");
 
-    previewWindow = null;
     fileMeta.textContent = `No se pudo decodificar ${file.name}.`;
     setStatus(error instanceof Error ? error.message : "No se pudo procesar el archivo.", "error");
   }
 }
+
+showPreviewEmpty();
 
 function handleFiles(fileList) {
   const file = fileList?.[0];
@@ -425,13 +430,6 @@ function handleFiles(fileList) {
 
 dropZone.addEventListener("click", (event) => {
   if (event.target instanceof Element && event.target.closest("button")) {
-    return;
-  }
-
-  try {
-    reservePreviewWindow();
-  } catch (error) {
-    setStatus(error instanceof Error ? error.message : "No se pudo abrir la pestaña nueva.", "error");
     return;
   }
 
@@ -448,13 +446,6 @@ dropZone.addEventListener("keydown", (event) => {
 pickFileButton.addEventListener("click", (event) => {
   event.preventDefault();
   event.stopPropagation();
-
-  try {
-    reservePreviewWindow();
-  } catch (error) {
-    setStatus(error instanceof Error ? error.message : "No se pudo abrir la pestaña nueva.", "error");
-    return;
-  }
 
   openFilePicker();
 });
