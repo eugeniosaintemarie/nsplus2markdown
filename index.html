@@ -55,20 +55,27 @@
               </button>
             </div>
 
-            <div class="file-meta" id="file-meta">
-              No hay archivo cargado todavía
-            </div>
-
-            <div class="status-row" id="status-row" data-tone="idle">
-              <span class="status-dot" aria-hidden="true"></span>
-              <p id="status" aria-live="polite">
-                Esperando un archivo .nsplus para decodificar...
-              </p>
-            </div>
           </article>
 
-          <!--<aside class="notes-panel">
-          </aside>-->
+          <aside class="notes-panel" aria-label="Vista previa del markdown">
+            <p class="eyebrow">Vista previa</p>
+            <h2>Markdown renderizado</h2>
+            <p class="preview-copy">
+              El contenido del archivo aparece acá una vez que lo cargás.
+            </p>
+            <div id="preview-empty" class="preview-empty" role="status" aria-live="polite">
+              <p class="preview-empty-kicker">Sin archivo cargado</p>
+              <p id="preview-empty-message" class="preview-empty-message">
+                Elegí o arrastrá un archivo .nsplus para verlo convertido a markdown.
+              </p>
+            </div>
+            <iframe
+              id="preview-frame"
+              class="preview-frame"
+              title="Vista previa del markdown"
+              hidden
+            ></iframe>
+          </aside>
         </section>
       </main>
     </div>
