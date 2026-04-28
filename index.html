@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NSPlus To Markdown</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <main class="app">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow"></p>
+            <h1 id="hero-title">NSPlus to Markdown</h1>
+            <!--<p class="lede"></p>-->
+          </div>
+          <!--<div class="hero-chip"></div>-->
+        </section>
+
+        <section class="workspace" aria-label="Decodificador NSPlus">
+          <article class="drop-card">
+            <div
+              id="drop-zone"
+              class="drop-zone"
+              tabindex="0"
+              role="button"
+              aria-label="Subir archivo NSPlus"
+              aria-describedby="drop-help"
+            >
+              <input
+                id="file-input"
+                class="file-input"
+                type="file"
+                accept=".nsplus,application/json,text/plain"
+              />
+
+              <div class="drop-icon" aria-hidden="true">
+                <span></span>
+              </div>
+              <h2>Arrastrá acá el .nsplus</h2>
+              <p id="drop-help">ó</p>
+              <button
+                class="primary-action"
+                type="button"
+                id="pick-file-button"
+              >
+                Selecciona el archivo
+              </button>
+            </div>
+
+            <div class="file-meta" id="file-meta">No hay archivo cargado todavía</div>
+
+            <div class="status-row" id="status-row" data-tone="idle">
+              <span class="status-dot" aria-hidden="true"></span>
+              <p id="status" aria-live="polite">
+                Esperando un archivo .nsplus para decodificar...
+              </p>
+            </div>
+          </article>
+
+          <!--<aside class="notes-panel">
+          </aside>-->
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
