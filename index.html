@@ -24,7 +24,12 @@
           <!--<div class="hero-chip"></div>-->
         </section>
 
-        <section class="workspace" id="workspace-container" aria-label="Decodificador NSPlus" data-state="empty">
+        <section
+          class="workspace"
+          id="workspace-container"
+          aria-label="Decodificador NSPlus"
+          data-state="empty"
+        >
           <article class="drop-card" id="drop-card-section">
             <div
               id="drop-zone"
@@ -54,19 +59,52 @@
                 Selecciona el archivo
               </button>
             </div>
-
           </article>
 
-          <aside class="notes-panel" id="preview-panel-section" aria-label="Vista previa del markdown" hidden>
-            <p class="eyebrow">Vista previa</p>
-            <h2>Markdown renderizado</h2>
-            <p class="preview-copy">
-              El contenido del archivo aparece acá una vez que lo cargás.
-            </p>
-            <div id="preview-empty" class="preview-empty" role="status" aria-live="polite">
+          <aside
+            class="notes-panel"
+            id="preview-panel-section"
+            aria-label="Vista previa del markdown"
+            hidden
+          >
+            <!--<p class="eyebrow">Vista previa</p>-->
+            <div class="panel-header">
+              <h2>Renderizado</h2>
+              <button
+                id="copy-markdown-btn"
+                class="copy-btn"
+                title="Copiar markdown"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                  ></path>
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                </svg>
+                Copiar
+              </button>
+            </div>
+            <!--<p class="preview-copy">
+            </p>-->
+            <div
+              id="preview-empty"
+              class="preview-empty"
+              role="status"
+              aria-live="polite"
+            >
               <p class="preview-empty-kicker">Sin archivo cargado</p>
               <p id="preview-empty-message" class="preview-empty-message">
-                Elegí o arrastrá un archivo .nsplus para verlo convertido a markdown.
+                Elegí o arrastrá un archivo .nsplus para verlo convertido a
+                markdown
               </p>
             </div>
             <iframe

@@ -249,7 +249,6 @@ function buildViewerDocument(markdown, fileName, project) {
 
       body {
         margin: 0;
-        min-height: 100vh;
         font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
         color: var(--text);
         background:
@@ -274,13 +273,13 @@ function buildViewerDocument(markdown, fileName, project) {
       main {
         width: min(1120px, calc(100% - 32px));
         margin: 0 auto;
-        padding: 32px 0 40px;
+        padding: 16px 0 16px;
       }
 
       .header {
         display: flex;
         justify-content: space-between;
-        gap: 18px;
+        gap: 12px;
         align-items: flex-start;
         flex-wrap: wrap;
       }
@@ -319,7 +318,7 @@ function buildViewerDocument(markdown, fileName, project) {
       }
 
       .panel {
-        margin-top: 24px;
+        margin-top: 12px;
         border: 1px solid var(--border);
         border-radius: 28px;
         background: var(--panel);
@@ -346,7 +345,6 @@ function buildViewerDocument(markdown, fileName, project) {
       .source {
         margin: 0;
         padding: 22px 20px 28px;
-        max-height: calc(100vh - 210px);
         overflow: auto;
         font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
         font-size: 0.95rem;
@@ -383,23 +381,23 @@ function buildViewerDocument(markdown, fileName, project) {
     <main>
       <section class="header">
         <div>
-          <p class="eyebrow">Markdown generado</p>
-          <h1 class="title">${safeTitle}</h1>
+          <!--<p class="eyebrow">Markdown generado</p>-->
+          <h3 class="title">${safeTitle}</h3>
           <p class="subtitle">
             Proyecto: <strong>${safeProjectName}</strong> · ${diagramLabel}
           </p>
         </div>
 
-        <div class="pill">Vista .md</div>
+        <!--<div class="pill">Vista .md</div>-->
       </section>
 
       <section class="panel">
-        <div class="panel-head">
+        <!--<div class="panel-head">
           <div>
             <p>El contenido siguiente es el markdown exportado desde el archivo .nsplus.</p>
             <p class="hint">Podés copiarlo o guardarlo desde el navegador si lo necesitás.</p>
           </div>
-        </div>
+        </div>-->
 
         <pre class="source">${safeMarkdown}</pre>
       </section>
@@ -525,3 +523,44 @@ dropZone.addEventListener("drop", (event) => {
 window.addEventListener("dragover", (event) => {
   event.preventDefault();
 });
+
+// Funcionalidad del botón Copiar
+const copyBtn = document.getElementById("copy-markdown-btn");
+if (copyBtn) {
+  copyBtn.addEventListener("click", async (event) => {
+    event.preventDefault();
+
+    if (!previewFrame || !previewFrame.srcdoc) {
+      return;
+    }
+
+    try {
+      // Extraer el markdown del iframe
+      const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+      if (!iframeDoc) return;
+
+      // Buscar el elemento con el markdown
+      const sourceElement = iframeDoc.querySelector("pre.source");
+      if (!sourceElement) return;
+
+      const markdown = sourceElement.textContent;
+
+      // Copiar al portapapeles
+      await navigator.clipboard.writeText(markdown);
+
+      // Feedback visual
+      const originalText = copyBtn.textContent;
+      const originalBg = copyBtn.style.background;
+
+      copyBtn.textContent = "¡Copiado!";
+      copyBtn.style.background = "rgba(127, 231, 162, 0.15)";
+
+      setTimeout(() => {
+        copyBtn.textContent = originalText;
+        copyBtn.style.background = originalBg;
+      }, 2000);
+    } catch (error) {
+      console.error("Error al copiar:", error);
+    }
+  });
+}
